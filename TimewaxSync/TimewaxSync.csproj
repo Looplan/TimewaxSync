@@ -116,6 +116,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Breakdown.cs" />
     <Compile Include="CalendarEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Planning.cs">
@@ -193,7 +194,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="Planning Timewax.xlsx" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files (x86)\Microsoft Office\root\Office16\excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]Planning Timewax.xlsx&quot;" />
+        <ProjectProperties HostName="Planning Timewax.xlsx" HostPackage="{3F2B7691-D1D1-402F-9370-2704A737CF60}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="XLS" Language="CS" TemplatesPath="VSTOTemplates" DebugInfoExeName="C:\Program Files\Microsoft Office\Office16\excel.exe" DebugInfoCommandLine="/x &quot;[$OUTPUT]Planning Timewax.xlsx&quot;" />
         <Host Name="Excel Document" Path=".\Planning Timewax.xlsx" GeneratedCodeNamespace="TimewaxSync">
           <HostItem Name="Sheet1" Code="Planning.cs" CanonicalName="Sheet1" DisplayName="Sheet1" Blueprint="Planning.Designer.xml" GeneratedCode="Planning.Designer.cs" />
           <HostItem Name="ThisWorkbook" Code="ThisWorkbook.cs" CanonicalName="ThisWorkbook" Blueprint="ThisWorkbook.Designer.xml" GeneratedCode="ThisWorkbook.Designer.cs" />

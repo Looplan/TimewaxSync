@@ -67,7 +67,7 @@ namespace TimewaxSync.TimewaxWebApi
             return calendarEntries;
         }
 
-        public async Task GetProjectActivities(string Project)
+        public async Task<List<Breakdown>> GetProjectActivities(string Project)
         {
             HttpClient client = new HttpClient();
             var requestContent = new XElement("request",
@@ -76,9 +76,30 @@ namespace TimewaxSync.TimewaxWebApi
             var response = await client.PostAsync("https://api.timewax.com/project/breakdown/list/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
-            var xmlEntries = root.Element("").Elements();
+            var xmlEntries = root.Element("breakdowns").Elements();
+
+            XmlSerializer serializer = new XmlSerializer(typeof(Breakdown));
+
+            List<Breakdown> breakdownEntries = new List<Breakdown>();
+
+            foreach (var xmlEntry in xmlEntries)
+            {
+                Breakdown calendarEntry = serializer.Deserialize(new StringReader(xmlEntry.ToString())) as Breakdown; 
+                breakdownEntries.Add(calendarEntry);
+            }
+            return breakdownEntries;
+
         }
 
+        public async Task ListProjects()
+        {
+            HttpClient client = new HttpClient();
+            var requestContent = new XElement("request",
+                new XElement("token", Token.Token));
+            var response = await client.PostAsync("https://api.timewax.com/project/list/", new StringContent(requestContent.ToString()));
+            var responseContent = await response.Content.ReadAsStringAsync();
+            XElement root = XElement.Parse(responseContent);
+        }
     
         public static TimewaxApi Instance {
             get {
