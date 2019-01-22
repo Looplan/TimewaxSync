@@ -1,0 +1,20 @@
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.pdb
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.dll.manifest
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.vsto
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\Planning Timewax.xlsx
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\Microsoft.Office.Tools.Excel.v4.0.Utilities.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csprojAssemblyReference.cache
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Properties.Resources.resources
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Timewax.resources
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csproj.GenerateResource.cache
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csproj.CoreCompileInputs.cache
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csproj.CopyComplete
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.pdb
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Net.Http.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.Algorithms.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.Encoding.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.Primitives.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.X509Certificates.dll
