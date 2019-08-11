@@ -19,6 +19,9 @@ namespace TimewaxSync
         [XmlElement(ElementName = "resourceName")]
         public string ResourceName { get; set; }
 
+        [XmlElement(ElementName = "resourceCode")]
+        public string ResourceCode { get; set; }
+
         [XmlElement(ElementName ="project")]
         public string Project { get; set; }
 

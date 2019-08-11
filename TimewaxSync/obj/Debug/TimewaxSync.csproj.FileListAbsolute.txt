@@ -18,3 +18,9 @@ C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cr
 C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.Encoding.dll
 C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.Primitives.dll
 C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\System.Security.Cryptography.X509Certificates.dll
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.StatusDialog.resources
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.dll.config
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Breakdowns.resources
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.Dialogs.VersionDialog.resources
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.Dialogs.HelpDialog.resources
+C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.CredentialsDialog.resources

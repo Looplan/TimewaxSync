@@ -15,7 +15,27 @@ namespace TimewaxSync {
     /// 
     [Microsoft.VisualStudio.Tools.Applications.Runtime.StartupObjectAttribute(1)]
     [global::System.Security.Permissions.PermissionSetAttribute(global::System.Security.Permissions.SecurityAction.Demand, Name="FullTrust")]
-    public sealed partial class Planning : Microsoft.Office.Tools.Excel.WorksheetBase {
+    public sealed partial class Breakdowns : Microsoft.Office.Tools.Excel.WorksheetBase {
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange Dates;
+        
+        public Microsoft.Office.Tools.Excel.NamedRange IDs;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange TimeBegin;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange TimeEnd;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange Projects;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange Phases;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange Codes;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange Employees;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange TimeIDs;
+        
+        internal Microsoft.Office.Tools.Excel.NamedRange EmployeeCodes;
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         private global::System.Object missing = global::System.Type.Missing;
@@ -23,7 +43,7 @@ namespace TimewaxSync {
         /// 
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        public Planning(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
+        public Breakdowns(global::Microsoft.Office.Tools.Excel.Factory factory, global::System.IServiceProvider serviceProvider) : 
                 base(factory, serviceProvider, "Sheet1", "Sheet1") {
         }
         
@@ -33,7 +53,7 @@ namespace TimewaxSync {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         protected override void Initialize() {
             base.Initialize();
-            Globals.Planning = this;
+            Globals.Breakdowns = this;
             global::System.Windows.Forms.Application.EnableVisualStyles();
             this.InitializeCachedData();
             this.InitializeControls();
@@ -114,6 +134,16 @@ namespace TimewaxSync {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void BeginInitialization() {
             this.BeginInit();
+            this.Dates.BeginInit();
+            this.IDs.BeginInit();
+            this.TimeBegin.BeginInit();
+            this.TimeEnd.BeginInit();
+            this.Projects.BeginInit();
+            this.Phases.BeginInit();
+            this.Codes.BeginInit();
+            this.Employees.BeginInit();
+            this.TimeIDs.BeginInit();
+            this.EmployeeCodes.BeginInit();
         }
         
         /// 
@@ -121,6 +151,16 @@ namespace TimewaxSync {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void EndInitialization() {
+            this.EmployeeCodes.EndInit();
+            this.TimeIDs.EndInit();
+            this.Employees.EndInit();
+            this.Codes.EndInit();
+            this.Phases.EndInit();
+            this.Projects.EndInit();
+            this.TimeEnd.EndInit();
+            this.TimeBegin.EndInit();
+            this.IDs.EndInit();
+            this.Dates.EndInit();
             this.EndInit();
         }
         
@@ -129,6 +169,16 @@ namespace TimewaxSync {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeControls() {
+            this.Dates = Globals.Factory.CreateNamedRange(null, null, "Dates", "Dates", this);
+            this.IDs = Globals.Factory.CreateNamedRange(null, null, "IDs", "IDs", this);
+            this.TimeBegin = Globals.Factory.CreateNamedRange(null, null, "TimeBegin", "TimeBegin", this);
+            this.TimeEnd = Globals.Factory.CreateNamedRange(null, null, "TimeEnd", "TimeEnd", this);
+            this.Projects = Globals.Factory.CreateNamedRange(null, null, "Projects", "Projects", this);
+            this.Phases = Globals.Factory.CreateNamedRange(null, null, "Phases", "Phases", this);
+            this.Codes = Globals.Factory.CreateNamedRange(null, null, "Codes", "Codes", this);
+            this.Employees = Globals.Factory.CreateNamedRange(null, null, "Employees", "Employees", this);
+            this.TimeIDs = Globals.Factory.CreateNamedRange(null, null, "TimeIDs", "TimeIDs", this);
+            this.EmployeeCodes = Globals.Factory.CreateNamedRange(null, null, "EmployeeCodes", "EmployeeCodes", this);
         }
         
         /// 
@@ -136,6 +186,49 @@ namespace TimewaxSync {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         private void InitializeComponents() {
+            // 
+            // Dates
+            // 
+            this.Dates.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // IDs
+            // 
+            this.IDs.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // TimeBegin
+            // 
+            this.TimeBegin.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // TimeEnd
+            // 
+            this.TimeEnd.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // Projects
+            // 
+            this.Projects.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // Phases
+            // 
+            this.Phases.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // Codes
+            // 
+            this.Codes.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // Employees
+            // 
+            this.Employees.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // TimeIDs
+            // 
+            this.TimeIDs.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // EmployeeCodes
+            // 
+            this.EmployeeCodes.DefaultDataSourceUpdateMode = System.Windows.Forms.DataSourceUpdateMode.Never;
+            // 
+            // Breakdowns
+            // 
         }
         
         /// 
@@ -144,19 +237,37 @@ namespace TimewaxSync {
         private bool NeedsFill(string MemberName) {
             return this.DataHost.NeedsFill(this, MemberName);
         }
+        
+        /// 
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Tools.Office.ProgrammingModel.dll", "15.0.0.0")]
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        protected override void OnShutdown() {
+            this.EmployeeCodes.Dispose();
+            this.TimeIDs.Dispose();
+            this.Employees.Dispose();
+            this.Codes.Dispose();
+            this.Phases.Dispose();
+            this.Projects.Dispose();
+            this.TimeEnd.Dispose();
+            this.TimeBegin.Dispose();
+            this.IDs.Dispose();
+            this.Dates.Dispose();
+            base.OnShutdown();
+        }
     }
     
     internal sealed partial class Globals {
         
-        private static Planning _Planning;
+        private static Breakdowns _Breakdowns;
         
-        internal static Planning Planning {
+        internal static Breakdowns Breakdowns {
             get {
-                return _Planning;
+                return _Breakdowns;
             }
             set {
-                if ((_Planning == null)) {
-                    _Planning = value;
+                if ((_Breakdowns == null)) {
+                    _Breakdowns = value;
                 }
                 else {
                     throw new System.NotSupportedException();

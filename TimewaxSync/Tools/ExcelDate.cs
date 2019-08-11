@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TimewaxSync.Tools
 {
@@ -16,7 +17,7 @@ namespace TimewaxSync.Tools
         /// </summary>
         /// <param name="date">a string to parse into a date</param>
         /// <returns>a DateTime value; if the string could not be parsed, returns DateTime.MinValue</returns>
-        public static DateTime ParseExcelDate(this string date)
+        public static DateTime? ParseExcelDate(this string date)
         {
             DateTime dt;
             if (DateTime.TryParse(date, out dt))
@@ -27,10 +28,16 @@ namespace TimewaxSync.Tools
             double oaDate;
             if (double.TryParse(date, out oaDate))
             {
-                return DateTime.FromOADate(oaDate);
+                try
+                {
+                    return DateTime.FromOADate(oaDate);
+                } catch(ArgumentException exception)
+                {
+                    return null;
+                }
             }
 
-            return DateTime.MinValue;
+            return null;
         }
     }
 }

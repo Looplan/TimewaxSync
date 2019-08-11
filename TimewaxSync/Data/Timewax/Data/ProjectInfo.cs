@@ -5,22 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace TimewaxSync
+namespace TimewaxSync.TimewaxWebApi.Data
 {
-    [XmlRoot(ElementName = "breakdown")]
-    public class Breakdown
+    [XmlRoot(ElementName = "project")]
+    public class ProjectInfo
     {
-        [XmlElement(ElementName = "id")]
-        public string ID { get; set; }
-
         [XmlElement(ElementName = "code")]
         public string Code { get; set; }
 
         [XmlElement(ElementName = "name")]
         public string Name { get; set; }
 
-
-
+        [XmlElement(ElementName = "shortname")]
+        public string Shortname { get; set; }
 
     }
 }

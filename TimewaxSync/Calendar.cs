@@ -2,21 +2,21 @@
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Excel;
 using Microsoft.VisualStudio.Tools.Applications.Runtime;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 
 namespace TimewaxSync
 {
-    public partial class Planning
+    public partial class Calendar
     {
-        private void Sheet1_Startup(object sender, System.EventArgs e)
+        private void Sheet2_Startup(object sender, System.EventArgs e)
         {
+            this.Name = "Kalender";
 
         }
 
-        private void Sheet1_Shutdown(object sender, System.EventArgs e)
+        private void Sheet2_Shutdown(object sender, System.EventArgs e)
         {
         }
 
@@ -28,8 +28,8 @@ namespace TimewaxSync
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(Sheet1_Startup);
-            this.Shutdown += new System.EventHandler(Sheet1_Shutdown);
+            this.Startup += new System.EventHandler(Sheet2_Startup);
+            this.Shutdown += new System.EventHandler(Sheet2_Shutdown);
         }
 
         #endregion
