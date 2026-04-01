@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -20,16 +22,65 @@ namespace TimewaxSync.TimewaxWebApi
     {
 
         private static TimewaxApi instance = null;
+        private static readonly HttpClient httpClient = new HttpClient();
+        private static readonly SemaphoreSlim throttleSemaphore = new SemaphoreSlim(1, 1);
+        private static DateTime lastRequestTime = DateTime.MinValue;
+        private static readonly TimeSpan minRequestInterval = TimeSpan.FromMilliseconds(200);
+        private const int maxRetries = 3;
+
+        static TimewaxApi()
+        {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            ServicePointManager.DefaultConnectionLimit = 10;
+        }
 
         public TokenObject Token { get; set; }
 
         public Authenticator Authenticator { get; set; }
-       
+
         public bool ErrorDisplay { get; set; }
 
         private TimewaxApi()
         {
 
+        }
+
+        private static async Task<HttpResponseMessage> ThrottledPostAsync(string url, HttpContent content)
+        {
+            await throttleSemaphore.WaitAsync();
+            try
+            {
+                for (int attempt = 0; attempt <= maxRetries; attempt++)
+                {
+                    var elapsed = DateTime.UtcNow - lastRequestTime;
+                    if (elapsed < minRequestInterval)
+                    {
+                        await Task.Delay(minRequestInterval - elapsed);
+                    }
+
+                    lastRequestTime = DateTime.UtcNow;
+                    var response = await httpClient.PostAsync(url, content);
+
+                    if (response.StatusCode == (HttpStatusCode)429)
+                    {
+                        if (attempt == maxRetries)
+                            throw new HttpRequestException("Timewax API rate limit exceeded after " + (maxRetries + 1) + " attempts.");
+
+                        var retryAfter = response.Headers.RetryAfter?.Delta;
+                        var delay = retryAfter ?? TimeSpan.FromSeconds(Math.Pow(2, attempt + 1));
+                        await Task.Delay(delay);
+                        continue;
+                    }
+
+                    return response;
+                }
+
+                throw new HttpRequestException("Timewax API request failed after retries.");
+            }
+            finally
+            {
+                throttleSemaphore.Release();
+            }
         }
 
         public static XElement ToXElement<T>(object obj)
@@ -47,13 +98,7 @@ namespace TimewaxSync.TimewaxWebApi
 
         private void displayErrorIfNeeded()
         {
-            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\TimewaxSync\log.xml";
-            if (!ErrorDisplay)
-            {
-                ErrorDisplay = true;
-                DialogResult result = MessageBox.Show("Error occured, please check the logs at " + path);
-                ErrorDisplay = false;
-            }
+            ErrorDisplay = true;
         }
      
         private string logApiError(XElement requestContent, XElement responseContent, bool messageBox = true)
@@ -74,6 +119,7 @@ namespace TimewaxSync.TimewaxWebApi
             }
 
             string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\TimewaxSync\log.xml";
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.AppendAllText(path, error.ToString() + "\n");
 
             return error.ToString();
@@ -81,14 +127,24 @@ namespace TimewaxSync.TimewaxWebApi
 
         public async Task Authenticate()
         {
-            HttpClient client = new HttpClient();
-
             var requestContent = new XElement("request", 
                 new XElement("client", Authenticator.Client), 
                 new XElement("username", Authenticator.Username),
                 new XElement("password", Authenticator.Password));
-            var response = await client.PostAsync("https://api.timewax.com/authentication/token/get/", new StringContent(requestContent.ToString()));
-            var responseContent = await response.Content.ReadAsStringAsync();
+
+
+            HttpResponseMessage httpResponseMessage = null;
+            string responseContent = string.Empty;
+            try {
+                httpResponseMessage = await ThrottledPostAsync("https://api.timewax.com/authentication/token/get/", new StringContent(requestContent.ToString()));
+                responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+                
+
             XElement root = XElement.Parse(responseContent);
             if(root.Element("valid").Value == "yes")
             {
@@ -98,21 +154,21 @@ namespace TimewaxSync.TimewaxWebApi
             {
                 if(root.Element("errors").Value == "invalid_password")
                 {
-                    MessageBox.Show("Invalid credentials, please change them under settings at the Timewax Tab to the most recent one.");
                     logApiError(requestContent, root, false);
+                    throw new Exception("Invalid credentials, please change them under settings at the Timewax Tab to the most recent one.");
                 }
                 return;
             }
+
         }
 
         public async Task<List<CalendarEntry>> GetCalendarEntries(string DateFrom, string DateTo)
         {
-            HttpClient client = new HttpClient();
             var requestContent = new XElement("request",
                 new XElement("token", Token.Token),
                 new XElement("dateFrom", DateFrom),
                 new XElement("dateTo", DateTo));
-            var response = await client.PostAsync("https://api.timewax.com/calendar/entries/list/", new StringContent(requestContent.ToString()));
+            var response = await ThrottledPostAsync("https://api.timewax.com/calendar/entries/list/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
 
@@ -140,49 +196,73 @@ namespace TimewaxSync.TimewaxWebApi
 
         public async Task<List<Breakdown>> GetProjectActivities(string Project)
         {
+            var requestContent = new XElement("request",
+                new XElement("token", Token.Token),
+                new XElement("project", Project));
+
+            HttpResponseMessage response;
             try
             {
-                HttpClient client = new HttpClient();
-                var requestContent = new XElement("request",
-                    new XElement("token", Token.Token),
-                    new XElement("project", Project));
-                var response = await client.PostAsync("https://api.timewax.com/project/breakdown/list/", new StringContent(requestContent.ToString()));
-                var responseContent = await response.Content.ReadAsStringAsync();
-                XElement root = XElement.Parse(responseContent);
-
-                if (root.Element("valid").Value == "yes")
-                {
-                    var xmlEntries = root.Element("breakdowns").Elements();
-
-                    XmlSerializer serializer = new XmlSerializer(typeof(Breakdown));
-
-                    List<Breakdown> breakdownEntries = new List<Breakdown>();
-
-                    foreach (var xmlEntry in xmlEntries)
-                    {
-                        Breakdown breakdown = serializer.Deserialize(new StringReader(xmlEntry.ToString())) as Breakdown;
-                        breakdownEntries.Add(breakdown);
-                    }
-                    return breakdownEntries;
-                }
-                else
-                {
-                    string error = logApiError(requestContent, root);
-                    throw new Exception(error);
-                }               
-            } catch (Exception exception)
+                response = await ThrottledPostAsync("https://api.timewax.com/project/breakdown/list/", new StringContent(requestContent.ToString()));
+            }
+            catch (Exception ex)
             {
-                throw exception;
-            }           
+                throw new Exception("Failed to send request to Timewax API.", ex);
+            }
+
+            string responseContent;
+            try
+            {
+                responseContent = await response.Content.ReadAsStringAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to read response content from Timewax API.", ex);
+            }
+
+            XElement root;
+            try
+            {
+                root = XElement.Parse(responseContent);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to parse XML response from Timewax API: " + responseContent, ex);
+            }
+
+            if (root.Element("valid").Value != "yes")
+            {
+                string error = logApiError(requestContent, root);
+                throw new Exception(error);
+            }
+
+            try
+            {
+                var xmlEntries = root.Element("breakdowns").Elements();
+
+                XmlSerializer serializer = new XmlSerializer(typeof(Breakdown));
+
+                List<Breakdown> breakdownEntries = new List<Breakdown>();
+
+                foreach (var xmlEntry in xmlEntries)
+                {
+                    Breakdown breakdown = serializer.Deserialize(new StringReader(xmlEntry.ToString())) as Breakdown;
+                    breakdownEntries.Add(breakdown);
+                }
+                return breakdownEntries;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to deserialize breakdown entries from Timewax API response.", ex);
+            }
         }
 
         public async Task<List<ProjectInfo>> ListProjects(bool isActive = false)
         {
-            HttpClient client = new HttpClient();
             var requestContent = new XElement("request",
                 new XElement("token", Token.Token),
                 new XElement("isActive", isActive ? "yes" : "no"));
-            var response = await client.PostAsync("https://api.timewax.com/project/list/", new StringContent(requestContent.ToString()));
+            var response = await ThrottledPostAsync("https://api.timewax.com/project/list/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
 
@@ -209,10 +289,9 @@ namespace TimewaxSync.TimewaxWebApi
     
         public async Task<Project> GetProject(string identifier)
         {
-            HttpClient client = new HttpClient();
             var requestContent = new XElement("request",
                 new XElement("token", Token.Token), new XElement("project", identifier));
-            var response = await client.PostAsync("https://api.timewax.com/project/get/", new StringContent(requestContent.ToString()));
+            var response = await ThrottledPostAsync("https://api.timewax.com/project/get/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
 
@@ -224,10 +303,9 @@ namespace TimewaxSync.TimewaxWebApi
 
         public async Task<XElement> EditCalendarEntry(XElement content)
         {
-            HttpClient client = new HttpClient();
             var requestContent = new XElement("request", content, new XElement("token", Token.Token));
 
-            var response = await client.PostAsync("https://api.timewax.com/calendar/entries/edit/", new StringContent(requestContent.ToString()));
+            var response = await ThrottledPostAsync("https://api.timewax.com/calendar/entries/edit/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
 
@@ -240,10 +318,9 @@ namespace TimewaxSync.TimewaxWebApi
 
         public async Task<XElement> AddCalendarEntry(XElement entry)
         {
-            HttpClient client = new HttpClient();
             var requestContent = new XElement("request", entry, new XElement("token", Token.Token));
 
-            var response = await client.PostAsync("https://api.timewax.com/calendar/entries/add/", new StringContent(requestContent.ToString()));
+            var response = await ThrottledPostAsync("https://api.timewax.com/calendar/entries/add/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
 
@@ -257,10 +334,9 @@ namespace TimewaxSync.TimewaxWebApi
 
         public async Task<XElement> RemoveCalendarEntry(string id)
         {
-            HttpClient client = new HttpClient();
             var requestContent = new XElement("request", new XElement("entry", new XElement("id", id)), new XElement("token", Token.Token));
 
-            var response = await client.PostAsync("https://api.timewax.com/calendar/entries/delete/", new StringContent(requestContent.ToString()));
+            var response = await ThrottledPostAsync("https://api.timewax.com/calendar/entries/delete/", new StringContent(requestContent.ToString()));
             var responseContent = await response.Content.ReadAsStringAsync();
             XElement root = XElement.Parse(responseContent);
 

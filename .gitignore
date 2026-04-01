@@ -6,4 +6,5 @@
 /bin
 /obj
 /TimewaxSync/TimewaxSync_1_TemporaryKey.pfx
-/TimewaxSync/bin/Debug/app.publish/Application Files/TimewaxSync_1_3_1_2
+/TimewaxSync/bin
+/TimewaxSync/obj

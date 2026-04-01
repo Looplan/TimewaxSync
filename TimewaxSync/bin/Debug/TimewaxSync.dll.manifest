@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="TimewaxSync.dll" version="1.3.1.2" publicKeyToken="67f1372283482a9b" language="neutral" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="TimewaxSync.dll" version="1.3.1.2" publicKeyToken="2228d6240fa881f6" language="neutral" processorArchitecture="msil" type="win32" />
   <description xmlns="urn:schemas-microsoft-com:asm.v1">TimewaxSync</description>
   <application />
   <entryPoint>
@@ -108,6 +108,31 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Net.Http" version="4.2.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Security.Cryptography.Algorithms" version="4.3.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Security.Cryptography.Encoding" version="4.0.2.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Security.Cryptography.Primitives" version="4.0.2.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Security.Cryptography.X509Certificates" version="4.1.2.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
       <assemblyIdentity name="System.Windows.Forms" version="4.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" />
     </dependentAssembly>
   </dependency>
@@ -146,84 +171,24 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Net.Http.dll" size="197680">
-      <assemblyIdentity name="System.Net.Http" version="4.1.1.3" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>9I6FyX+ORzJA25JdAO6HG+ni57aEsxO5EdXCwUxHB4o=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Security.Cryptography.Algorithms.dll" size="39872">
-      <assemblyIdentity name="System.Security.Cryptography.Algorithms" version="4.1.0.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8U3zpUioxDz+f2DTJaxeldksYF9IK77hejn5i8/MchY=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Security.Cryptography.Encoding.dll" size="23480">
-      <assemblyIdentity name="System.Security.Cryptography.Encoding" version="4.0.1.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>kcfALUb3VBk7OYjCgFATXIBOR9w0VtDD3eAorANB++I=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Security.Cryptography.Primitives.dll" size="22816">
-      <assemblyIdentity name="System.Security.Cryptography.Primitives" version="4.0.1.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>WmyPaajeqKd1MxJzqq5wfu4qJ0P7FJjDzE26tnkSXRE=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="System.Security.Cryptography.X509Certificates.dll" size="38872">
-      <assemblyIdentity name="System.Security.Cryptography.X509Certificates" version="4.1.1.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>EyroDInzh1DRreQ70eWI9NCXHqgTtN9dylrzwRPp5xM=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimewaxSync.dll" size="649728">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TimewaxSync.dll" size="651776">
       <assemblyIdentity name="TimewaxSync" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>+4wFaLAZ+6FMnCbIYifcnB58OdWPkbgkYMjOTbUy4XA=</dsig:DigestValue>
+        <dsig:DigestValue>TXw/nDinhFkuloqaKIMR/0fxaGqnCCFAn2t5oOxeOVY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="TimewaxSync.dll.config" size="1027">
+  <file name="TimewaxSync.dll.config" size="1106">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>pLdykZtT/OlU+jvXLcBXGGh6T8e5z4iANW3Zc5XDMQo=</dsig:DigestValue>
+      <dsig:DigestValue>dVbwyD9mrdZvUSM9L5I7kT2DacMwUKe+2xLTGgJFwMM=</dsig:DigestValue>
     </hash>
   </file>
   <vstav3:addIn xmlns:vstav3="urn:schemas-microsoft-com:vsta.v3">
@@ -252,4 +217,4 @@
       </vstov4:customizations>
     </vstav3:application>
   </vstav3:addIn>
-<publisherIdentity name="CN=DESKTOP-ROJBPEP\stesi" issuerKeyHash="b8681b8a0d55acb432647c987b9b4b0349a7b23f" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>5/8sXjpKs7n2isb5XtBhUxkrZpipT4ATlYt2V1tW5dA=</DigestValue></Reference></SignedInfo><SignatureValue>wB1DxfJ1ugH7Ptwfu094YfxixbTSkGX0rDeljQN+V2giaG0l3kq3O+Ig9oUkTi5wTduhLWokJYjBscq4nHdKJzGPcCyLJeohh6r/YOxdA5ObJrYzWaPKxEv7q5RkgM9fdvmpbNj9qR8CtTyu6taKeovQV2XtHRIl7X9WqIIG/CA=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>xaRGTzBnPJb1dDBuvbqZTYV5O2ByvGmv2N8oVfZbRz+9qgzumDNrRg8Iz4dYyGI7Z6RwUVSVPoVsLUu3NiE2rqr/d6U++KqDwtZU5TkGwDwoVu0wTEqwpBT+i4WxcBepVckZfzf7JpoigtsgfrrlP8FqaPfBbioEk0quEvEjxZE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="d0e5565b57768b9513804fa998662b195361d05ef9c68af6b9b34a3a5e2cffe7" Description="" Url=""><as:assemblyIdentity name="TimewaxSync.dll" version="1.3.1.2" publicKeyToken="67f1372283482a9b" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=DESKTOP-ROJBPEP\stesi</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>3GuKFajsqycpJEEu8hUbx35bVLIN+RmOT2me3T2+TJY=</DigestValue></Reference></SignedInfo><SignatureValue>qlnhbff3s8im0Oyqv9oYJhaEDnoD48AOY5wNOBv5tZ/FB7ANRRyg2ocJEx25eErv1YpL5ZbSLhc3JnYNos5gqTe5/IU81QyVRxXPRFOzO4gclvFFaP+3VXKtoJesV/0dkVChY6yFQB+1hGA82cz2v9x7xnapw5ktRNFzwAqOj5M=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>xaRGTzBnPJb1dDBuvbqZTYV5O2ByvGmv2N8oVfZbRz+9qgzumDNrRg8Iz4dYyGI7Z6RwUVSVPoVsLUu3NiE2rqr/d6U++KqDwtZU5TkGwDwoVu0wTEqwpBT+i4WxcBepVckZfzf7JpoigtsgfrrlP8FqaPfBbioEk0quEvEjxZE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB7TCCAVagAwIBAgIQNjeeoxnUmalFmNAUoD6KtTANBgkqhkiG9w0BAQsFADA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtAFIATwBKAEIAUABFAFAAXABzAHQAZQBzAGkwHhcNMTkwMTEyMTYwNDI4WhcNMjAwMTEyMjIwNDI4WjA1MTMwMQYDVQQDHioARABFAFMASwBUAE8AUAAtAFIATwBKAEIAUABFAFAAXABzAHQAZQBzAGkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMWkRk8wZzyW9XQwbr26mU2FeTtgcrxpr9jfKFX2W0c/vaoM7pgza0YPCM+HWMhiO2ekcFFUlT6FbC1LtzYhNq6q/3elPviqg8LWVOU5BsA8KFbtMExKsKQU/ouFsXAXqVXJGX83+yaaIoLbIH665T/Bamj3wW4qBJNKrhLxI8WRAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAPmra8as9iV3wlg6KJkm1y9LDA1T1XQDB9Yo6YQL74aR+yjd4mQuRFsaj8eajApJOXiuVduae72dCJHEwpBTaL0BO9C7F093DHp7Fw2581hOY+sxVQOF+wiM8kHCV6C9YWbn87Ai/f177pC7UVdxE85VJkX4fP0nKyXg1P6eRfs0=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
+<publisherIdentity name="CN=BRAMSINKE\stesi" issuerKeyHash="7a224e9e51911aa14b1669842af4b3611c4bcad9" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>ZUgXO7hlmpw7sY2Yzbmr7IQA7OpPb4KobhbnhyxtHXU=</DigestValue></Reference></SignedInfo><SignatureValue>Xr3cpzkY/Ox6pNfAOFVmIaqO16ke4OM4MezdEsxModB9zbugkEECLpHdBmsbocBcWNivsBRNh0DIWm/HUEmDZ8RwCRCcrKTcYPAC/2Wzl1DEYb4p+MUtNY7Jsl1Bxs+86Lef2A4KJaZCcT7k1cF6AlaJtgvFkB1JzeuGhklIHZA=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>xsk5oZIXhhClIs2OmzLYPLe45cxKqiuciRhRgKq9aFAB9dXdjJab4jwXiCM18PdRmHFLLtBwuvoYAwn8TmOFrEKn9JG/5KirTeIykS7eyqyWekqQLp8K/3fQnCEMRW0tlya+7OrBHTGFsbu1Iiu39ktKrYTv4IKx2oED/P2yj4E=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="751d6d2c87e7166ea8826f4feaec0084ecabb9cd988db13b9c9a65b83b174865" Description="" Url=""><as:assemblyIdentity name="TimewaxSync.dll" version="1.3.1.2" publicKeyToken="2228d6240fa881f6" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=BRAMSINKE\stesi</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>Vs16Q9P6SRfGkU6hpdrNco7ZGcAxzH1KWaOBZOAZqLY=</DigestValue></Reference></SignedInfo><SignatureValue>tmR/SwYtKlggxdkF+Eu478f4kDmMr110ZIyWF5SVG166U67oiX8Acjrf0d3js0PvFK+rotmw7cnBnkyRumRQbTytH0Eb25Av7lu7CL8d4NMvsrWDPj/O+9KGA3MjrovuFpJGfKWx3V9a2ILwSX8f2Unka7q0QaHFPbRQO14auKQ=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>xsk5oZIXhhClIs2OmzLYPLe45cxKqiuciRhRgKq9aFAB9dXdjJab4jwXiCM18PdRmHFLLtBwuvoYAwn8TmOFrEKn9JG/5KirTeIykS7eyqyWekqQLp8K/3fQnCEMRW0tlya+7OrBHTGFsbu1Iiu39ktKrYTv4IKx2oED/P2yj4E=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB1TCCAT6gAwIBAgIQZYh/otCVt6dEVHGhuQESmzANBgkqhkiG9w0BAQsFADApMScwJQYDVQQDHh4AQgBSAEEATQBTAEkATgBLAEUAXABzAHQAZQBzAGkwHhcNMjYwNDAxMTg0ODEwWhcNMjcwNDAyMDA0ODEwWjApMScwJQYDVQQDHh4AQgBSAEEATQBTAEkATgBLAEUAXABzAHQAZQBzAGkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMbJOaGSF4YQpSLNjpsy2Dy3uOXMSqornIkYUYCqvWhQAfXV3YyWm+I8F4gjNfD3UZhxSy7QcLr6GAMJ/E5jhaxCp/SRv+Soq03iMpEu3sqslnpKkC6fCv930JwhDEVtLZcmvuzqwR0xhbG7tSIrt/ZLSq2E7+CCsdqBA/z9so+BAgMBAAEwDQYJKoZIhvcNAQELBQADgYEAGzYlfXbXat1TuSJDqj/lj1nI98tqAUkCYh6Bs/NWz06KswIogHVd0k0YN3jhKpgN3jjTmhQTM2Pw2TH64u5L13l7M8Q4CnZ72QTuJKEbB/X/TKlwogfUA3PbTzyZAR5XprkvxYYyBCKIAouuuU2O5fREbUKZmaUu1cMAjC4QtEE=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>

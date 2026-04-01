@@ -24,3 +24,24 @@ C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Breakd
 C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.Dialogs.VersionDialog.resources
 C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.Dialogs.HelpDialog.resources
 C:\Users\stesi\source\repos\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.CredentialsDialog.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.dll.config
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.dll
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.pdb
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.dll.manifest
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\TimewaxSync.vsto
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\Planning Timewax.xlsx
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\bin\Debug\Microsoft.Office.Tools.Excel.v4.0.Utilities.dll
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csproj.AssemblyReference.cache
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Breakdowns.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Properties.Resources.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.Timewax.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.CredentialsDialog.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.Dialogs.HelpDialog.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.StatusDialog.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.UI.Dialogs.VersionDialog.resources
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csproj.GenerateResource.cache
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.csproj.CoreCompileInputs.cache
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxS.DAB2F7D2.Up2Date
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.dll
+C:\Users\stesi\Documents\projects\TimewaxSync\TimewaxSync\obj\Debug\TimewaxSync.pdb

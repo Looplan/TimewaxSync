@@ -74,9 +74,11 @@ namespace TimewaxSync
             }
             catch (Exception exception)
             {
-                MessageBox.Show(exception.Message);
+                dialog.Show();
+                dialog.StatusLabel.Text = "Authenticatie mislukt.";
+                dialog.ShowError(exception.Message);
             }
-
+                
             TimewaxExcelSync = new TimewaxExcelSync(api);
         }
 
@@ -105,6 +107,7 @@ namespace TimewaxSync
 
         private void ResetStatusDialog()
         {
+            dialog.ClearErrors();
             dialog.progressBar.Style = ProgressBarStyle.Marquee;
             dialog.progressBar.Value = 0;
             dialog.StatusLabel.Text = "Crunching some cookies...";
@@ -133,7 +136,10 @@ namespace TimewaxSync
 
             await Download();
 
-            dialog.Hide();
+            if (!dialog.HasErrors)
+            {
+                dialog.Hide();
+            }
 
             changedRows.Clear();
 
@@ -155,17 +161,22 @@ namespace TimewaxSync
                 Globals.ThisWorkbook.Application.ScreenUpdating = false;
                 Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationManual;
 
-                dialog.StatusLabel.Text = "Downloading info...";
+                var progress = new Progress<string>(status => dialog.StatusLabel.Text = status);
+                var errors = new Progress<string>(error => dialog.ShowError(error));
 
-                List<ExcelEntry> entries = await Task.Run(async () => await TimewaxExcelSync.GetExcelEntries());
+                List<ExcelEntry> entries = await Task.Run(async () => await TimewaxExcelSync.GetExcelEntries(progress, errors));
 
-                dialog.StatusLabel.Text = "Writing information (Excel might freeze)";
+                dialog.StatusLabel.Text = "Writing entries to Excel...";
 
                 int index = 2;
 
-                foreach (ExcelEntry entry in entries)
+                for (int i = 0; i < entries.Count; i++)
                 {
-                    entry.WriteToRow(index);
+                    if (i % 50 == 0)
+                    {
+                        dialog.StatusLabel.Text = $"Writing entry {i + 1}/{entries.Count} to Excel...";
+                    }
+                    entries[i].WriteToRow(index);
                     index++;
                 }
 
@@ -173,10 +184,15 @@ namespace TimewaxSync
                 Globals.ThisWorkbook.Application.ScreenUpdating = true;
                 Globals.ThisWorkbook.Application.Calculation = XlCalculation.xlCalculationAutomatic;
 
+                if (dialog.HasErrors)
+                {
+                    dialog.StatusLabel.Text = "Voltooid met fouten.";
+                }
             }
             catch (Exception ex)
             {
-                throw ex;
+                dialog.StatusLabel.Text = "Er zijn fouten opgetreden.";
+                dialog.ShowError(ex.Message);
             }
         }
 
@@ -317,19 +333,8 @@ namespace TimewaxSync
             if (errorRows.Count > 0)
             {
                 dialog.StatusLabel.Text = "Errors gevonden";
-
-                DialogResult result = MessageBox.Show(dialog, "Niet alle velden zijn overal correct ingevuld, doorgaan?",
-                   "Upload",
-                   MessageBoxButtons.OKCancel,
-                   MessageBoxIcon.Warning);
-                if (result == DialogResult.OK)
-                {
-                    upload = true;
-                }
-                else
-                {
-                    upload = false;
-                }
+                dialog.ShowError("Niet alle velden zijn overal correct ingevuld.");
+                upload = false;
             }
             else if (addEntries.Count == 0 && updateEntries.Count == 0 && removeEntries.Count == 0)
             {
@@ -345,19 +350,30 @@ namespace TimewaxSync
 
             if (upload)
             {
-                dialog.StatusLabel.Text = "Uploading......";
+                try
+                {
+                    dialog.StatusLabel.Text = "Uploading......";
 
-                List<TimewaxExcelSync.ExcelEntryResult> addResults = await Task.Run(async () => await TimewaxExcelSync.AddExcelEntries(addEntries));
-                ProcessAddEntriesResults(addResults);
+                    List<TimewaxExcelSync.ExcelEntryResult> addResults = await Task.Run(async () => await TimewaxExcelSync.AddExcelEntries(addEntries));
+                    ProcessAddEntriesResults(addResults);
 
-                List<TimewaxExcelSync.ExcelEntryResult> updateResults = await Task.Run(async () => await TimewaxExcelSync.UpdateExcelEntries(updateEntries));
-                ProcessUpdateEntriesResults(updateResults);
+                    List<TimewaxExcelSync.ExcelEntryResult> updateResults = await Task.Run(async () => await TimewaxExcelSync.UpdateExcelEntries(updateEntries));
+                    ProcessUpdateEntriesResults(updateResults);
 
-                List<TimewaxExcelSync.ExcelEntryResult> removeResults = await Task.Run(async () => await TimewaxExcelSync.RemoveExcelEntries(removeEntries));
-                ProcessRemoveEntriesResults(removeResults);
+                    List<TimewaxExcelSync.ExcelEntryResult> removeResults = await Task.Run(async () => await TimewaxExcelSync.RemoveExcelEntries(removeEntries));
+                    ProcessRemoveEntriesResults(removeResults);
+                }
+                catch (Exception ex)
+                {
+                    dialog.StatusLabel.Text = "Er zijn fouten opgetreden.";
+                    dialog.ShowError(ex.Message);
+                }
             }
 
-            dialog.Hide();
+            if (!dialog.HasErrors)
+            {
+                dialog.Hide();
+            }
         }
 
         private List<Range> GetUsedRows()

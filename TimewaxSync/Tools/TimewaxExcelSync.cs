@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TimewaxSync.TimewaxWebApi.Data;
@@ -30,30 +29,46 @@ namespace TimewaxSync.Tools
             this.TimewaxApi = timewaxApi;
         }
 
-        public async Task<List<ExcelEntry>> GetExcelEntries()
+        public async Task<List<ExcelEntry>> GetExcelEntries(IProgress<string> progress = null, IProgress<string> errors = null)
         {
             try
             {
+                progress?.Report("Downloading calendar entries...");
                 List<CalendarEntry> calendarEntries = await TimewaxApi.GetCalendarEntries("20160101", DateTime.Now.AddYears(1).ToString("yyyyMMdd"));
 
+                progress?.Report("Downloading project list...");
                 List<ProjectInfo> projects = await TimewaxApi.ListProjects(true);
-
-                List<Task> downloadTasks = new List<Task>();
 
                 Dictionary<ProjectInfo, List<Breakdown>> pairs = new Dictionary<ProjectInfo, List<Breakdown>>();
 
-                foreach (var project in projects)
+                for (int i = 0; i < projects.Count; i++)
                 {
-                    Task downloadTask = Task.Run(async () =>
+                    var project = projects[i];
+                    progress?.Report($"Downloading activities for project {i + 1}/{projects.Count}: {project.Name}...");
+
+                    List<Breakdown> breakdowns;
+                    try
                     {
-                        List<Breakdown> breakdowns = await TimewaxApi.GetProjectActivities(project.Code);
-                        pairs.Add(project, breakdowns);
-                    });
-                    Thread.Sleep(100);
-                    downloadTasks.Add(downloadTask);
+                        breakdowns = await TimewaxApi.GetProjectActivities(project.Name);
+                    }
+                    catch (Exception)
+                    {
+                        try
+                        {
+                            progress?.Report($"Retrying with project code {project.Code}...");
+                            breakdowns = await TimewaxApi.GetProjectActivities(project.Code);
+                        }
+                        catch (Exception ex)
+                        {
+                            errors?.Report($"Project '{project.Name}' ({project.Code}): {ex.Message}");
+                            continue;
+                        }
+                    }
+
+                    pairs.Add(project, breakdowns);
                 }
 
-                await Task.WhenAll(downloadTasks);
+                progress?.Report("Processing entries...");
 
                 List<ExcelEntry> result = new List<ExcelEntry>();
 
@@ -120,16 +135,15 @@ namespace TimewaxSync.Tools
                 }
                 return result;
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                throw exception;
+                throw;
             }
         }
 
         public async Task<List<ExcelEntryResult>> AddExcelEntries(List<ExcelEntry> entries)
         {
-            List<KeyValuePair<ExcelEntryResult, Task<XElement>>> storage = new List<KeyValuePair<ExcelEntryResult, Task<XElement>>>();
-            List<Task> tasks = new List<Task>();
+            List<ExcelEntryResult> list = new List<ExcelEntryResult>();
             foreach (ExcelEntry entry in entries)
             {
                 TimeSpan? hours = entry.TimeTo - entry.TimeFrom;
@@ -144,38 +158,25 @@ namespace TimewaxSync.Tools
                 content.Add(new XElement("project", entry.Project));
                 content.Add(new XElement("breakdown", entry.Phase));
 
-                Task<XElement> uploadTask = Task.Run(async () => await TimewaxApi.AddCalendarEntry(content));
+                XElement responseContent = await TimewaxApi.AddCalendarEntry(content);
 
                 int.TryParse(entry.ID, out int id);
-
-                storage.Add(new KeyValuePair<ExcelEntryResult, Task<XElement>>(
-                    new ExcelEntryResult() { Row = entry.Row, ID = id }, 
-                    uploadTask));
-
-                tasks.Add(uploadTask);
-                Thread.Sleep(50);
-            }
-            await Task.WhenAll(tasks);
-
-            List<ExcelEntryResult> list = new List<ExcelEntryResult>();
-            foreach(KeyValuePair<ExcelEntryResult, Task<XElement>> pair in storage)
-            {
-                XElement responseContent = pair.Value.Result;
-
-                ExcelEntryResult result = pair.Key;
                 int.TryParse(responseContent.Element("id")?.Value, out int timeID);
 
-                result.TimeID = timeID;
-                result.Valid = (responseContent.Element("valid").Value == "yes");
-                list.Add(result);
+                list.Add(new ExcelEntryResult()
+                {
+                    Row = entry.Row,
+                    ID = id,
+                    TimeID = timeID,
+                    Valid = (responseContent.Element("valid").Value == "yes")
+                });
             }
             return list;
         }
 
         public async Task<List<ExcelEntryResult>> UpdateExcelEntries(List<ExcelEntry> entries)
         {
-            List<KeyValuePair<ExcelEntryResult, Task<XElement>>> storage = new List<KeyValuePair<ExcelEntryResult, Task<XElement>>>();
-            List<Task> tasks = new List<Task>();
+            List<ExcelEntryResult> list = new List<ExcelEntryResult>();
             foreach (ExcelEntry entry in entries)
             {
                 TimeSpan? hours = entry.TimeTo - entry.TimeFrom;
@@ -191,61 +192,39 @@ namespace TimewaxSync.Tools
                 content.Add(new XElement("timeFrom", entry.TimeFrom?.ToString(@"hh\:mm")));
                 content.Add(new XElement("hours", hours?.TotalHours));
 
-                Task<XElement> uploadTask = Task.Run(async () => await TimewaxApi.EditCalendarEntry(content));
+                XElement responseContent = await TimewaxApi.EditCalendarEntry(content);
 
                 int.TryParse(entry.ID, out int id);
                 int.TryParse(entry.TimeID, out int timeID);
 
-                storage.Add(new KeyValuePair<ExcelEntryResult, Task<XElement>>(
-                    new ExcelEntryResult() { Row = entry.Row, ID = id, TimeID = timeID },
-                    uploadTask));
-
-                tasks.Add(uploadTask);
-                Thread.Sleep(50);
-            }
-            await Task.WhenAll(tasks);
-
-            List<ExcelEntryResult> list = new List<ExcelEntryResult>();
-            foreach (KeyValuePair<ExcelEntryResult, Task<XElement>> pair in storage)
-            {
-                XElement responseContent = pair.Value.Result;
-
-                ExcelEntryResult result = pair.Key;
-                result.Valid = (responseContent.Element("valid").Value == "yes");
-                list.Add(result);
+                list.Add(new ExcelEntryResult()
+                {
+                    Row = entry.Row,
+                    ID = id,
+                    TimeID = timeID,
+                    Valid = (responseContent.Element("valid").Value == "yes")
+                });
             }
             return list;
         }
 
         public async Task<List<ExcelEntryResult>> RemoveExcelEntries(List<ExcelEntry> entries)
         {
-            List<KeyValuePair<ExcelEntryResult, Task<XElement>>> storage = new List<KeyValuePair<ExcelEntryResult, Task<XElement>>>();
-            List<Task> tasks = new List<Task>();
+            List<ExcelEntryResult> list = new List<ExcelEntryResult>();
             foreach (ExcelEntry entry in entries)
             {
-                Task<XElement> uploadTask = Task.Run(async () => await TimewaxApi.RemoveCalendarEntry(entry.TimeID));
+                XElement responseContent = await TimewaxApi.RemoveCalendarEntry(entry.TimeID);
 
                 int.TryParse(entry.ID, out int id);
                 int.TryParse(entry.TimeID, out int timeID);
 
-                storage.Add(new KeyValuePair<ExcelEntryResult, Task<XElement>>(
-                    new ExcelEntryResult() { Row = entry.Row, ID = id, TimeID = timeID },
-                    uploadTask));
-
-                tasks.Add(uploadTask);
-                Thread.Sleep(50);
-            }
-            await Task.WhenAll(tasks);
-
-
-            List<ExcelEntryResult> list = new List<ExcelEntryResult>();
-            foreach (KeyValuePair<ExcelEntryResult, Task<XElement>> pair in storage)
-            {
-                XElement responseContent = pair.Value.Result;
-
-                ExcelEntryResult result = pair.Key;
-                result.Valid = (responseContent.Element("valid").Value == "yes");
-                list.Add(result);
+                list.Add(new ExcelEntryResult()
+                {
+                    Row = entry.Row,
+                    ID = id,
+                    TimeID = timeID,
+                    Valid = (responseContent.Element("valid").Value == "yes")
+                });
             }
             return list;
         }
